@@ -4,7 +4,7 @@ WORKDIR /root/
 
 COPY src ./src
 
-ENV ASTERISK_VERSION 15.2.0-rc2
+ENV ASTERISK_VERSION 13.19.0-rc2
 
 RUN apk update \
   && apk add libtool libuuid jansson libxml2 sqlite-libs readline libcurl openssl zlib libsrtp lua5.1-libs spandsp \
@@ -16,6 +16,7 @@ RUN apk update \
   && cd asterisk-${ASTERISK_VERSION} \
   && sed -i -e 's/ASTSSL_LIBS:=$(OPENSSL_LIB)/ASTSSL_LIBS:=-Wl,--no-as-needed $(OPENSSL_LIB) -Wl,--as-needed/g' main/Makefile \
   && patch -p1 < ../src/musl-mutex-init.patch \
+  && patch -p1 < ../src/musl-glob-compat.patch \
   && ./configure --with-pjproject-bundled \
   && make menuselect.makeopts \
   && ./menuselect/menuselect \
