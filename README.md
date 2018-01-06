@@ -32,3 +32,7 @@ docker run -it --rm \
   ipoddubny/alpine-asterisk \
   /usr/sbin/asterisk -cvvvvf
 ```
+
+## References
+ - Alpine Asterisk package source: https://git.alpinelinux.org/cgit/aports/tree/main/asterisk
+ - Asterisk in an Alpine Linux LXC container: https://paulgorman.org/technical/asterisk-alpine-lxc.txt
