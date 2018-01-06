@@ -15,7 +15,7 @@ RUN apk update \
   && tar xzf asterisk-${ASTERISK_VERSION}.tar.gz \
   && cd asterisk-${ASTERISK_VERSION} \
   && sed -i -e 's/ASTSSL_LIBS:=$(OPENSSL_LIB)/ASTSSL_LIBS:=-Wl,--no-as-needed $(OPENSSL_LIB) -Wl,--as-needed/g' main/Makefile \
-  && patch -p1 ../src/musl-mutex-init.patch \
+  && patch -p1 < ../src/musl-mutex-init.patch \
   && ./configure --with-pjproject-bundled \
   && make menuselect.makeopts \
   && ./menuselect/menuselect \
