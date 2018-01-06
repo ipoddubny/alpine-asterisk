@@ -7,10 +7,10 @@ COPY src ./src
 ENV ASTERISK_VERSION 15.2.0-rc2
 
 RUN apk update \
-  && apk add libtool libresample libuuid jansson libxml2 sqlite sqlite-libs readline libcurl openssl zlib libsrtp lua \
-  && apk add --virtual asterisk-build-deps build-base patch bsd-compat-headers util-linux-dev ncurses-dev \
+  && apk add libtool libuuid jansson libxml2 sqlite-libs readline libcurl openssl zlib libsrtp lua5.1-libs spandsp \
+  && apk add --virtual asterisk-build-deps build-base patch bsd-compat-headers util-linux-dev ncurses-dev libresample \
         jansson-dev libxml2-dev sqlite-dev readline-dev curl-dev openssl-dev \
-        zlib-dev libsrtp-dev lua-dev \
+        zlib-dev libsrtp-dev lua-dev spandsp-dev \
   && wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-${ASTERISK_VERSION}.tar.gz \
   && tar xzf asterisk-${ASTERISK_VERSION}.tar.gz \
   && cd asterisk-${ASTERISK_VERSION} \
