@@ -56,7 +56,7 @@ RUN apk update \
     --disable res_adsi \
     --disable res_smdi \
     menuselect.makeopts \
-  && make -j2 ASTCFLAGS="-Os -fomit-frame-pointer" ASTLDFLAGS="-Wl,--as-needed" \
+  && make -j$(getconf _NPROCESSORS_ONLN) ASTCFLAGS="-Os -fomit-frame-pointer" ASTLDFLAGS="-Wl,--as-needed" \
   && scanelf --recursive --nobanner --osabi --etype "ET_DYN,ET_EXEC" . \
     | while read type osabi filename ; do \
       [ "$osabi" != "STANDALONE" ] || continue ; \
