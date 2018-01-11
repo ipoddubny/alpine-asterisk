@@ -8,10 +8,26 @@ ENV ASTERISK_VERSION 15.2.0
 
 RUN apk update \
   && apk add libtool libuuid jansson libxml2 sqlite-libs readline libcurl openssl zlib libsrtp lua5.1-libs spandsp \
-  && apk add --virtual asterisk-build-deps build-base patch bsd-compat-headers util-linux-dev ncurses-dev libresample \
+  && apk add --virtual .build-deps gnupg build-base patch bsd-compat-headers util-linux-dev ncurses-dev libresample \
         jansson-dev libxml2-dev sqlite-dev readline-dev curl-dev openssl-dev \
         zlib-dev libsrtp-dev lua-dev spandsp-dev \
+  && export GNUPGHOME="$(mktemp -d)" \
+  && for key in \
+    551F29104B2106080C6C2851073B0C1FC9B2E352 \
+    21A91EB1F012252993E9BF4A368AB332B59975F3 \
+    80CEBC345EC9FF529B4B7B808438CBA18D0CAA72 \
+    639D932D5170532F8C200CCD9C59F000777DCC45 \
+    57E769BC37906C091E7F641F6CB44E557BD982D8 \
+    CDBEE4CC699E200EB4D46BB79E76E3A42341CE04 \
+  ; do \
+    gpg --keyserver pgp.mit.edu --recv-keys "$key" || \
+    gpg --keyserver keyserver.pgp.com --recv-keys "$key" || \
+    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" ; \
+  done \
   && wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-${ASTERISK_VERSION}.tar.gz \
+  && wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-${ASTERISK_VERSION}.tar.gz.asc \
+  && gpg --batch --verify asterisk-${ASTERISK_VERSION}.tar.gz.asc asterisk-${ASTERISK_VERSION}.tar.gz \
+  && rm -r "$GNUPGHOME" asterisk-${ASTERISK_VERSION}.tar.gz.asc \
   && tar xzf asterisk-${ASTERISK_VERSION}.tar.gz \
   && cd asterisk-${ASTERISK_VERSION} \
   && sed -i -e 's/ASTSSL_LIBS:=$(OPENSSL_LIB)/ASTSSL_LIBS:=-Wl,--no-as-needed $(OPENSSL_LIB) -Wl,--as-needed/g' main/Makefile \
@@ -48,7 +64,7 @@ RUN apk update \
     done \
   && make install \
   && cd .. \
-  && apk del asterisk-build-deps \
+  && apk del .build-deps \
   && rm -rf ./asterisk* \
   && rm -rf src \
   && rm -rf /var/cache/apk/*
