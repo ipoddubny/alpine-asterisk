@@ -41,7 +41,11 @@ RUN apk update \
     --disable res_smdi \
     menuselect.makeopts \
   && make -j2 ASTCFLAGS="-Os -fomit-frame-pointer" ASTLDFLAGS="-Wl,--as-needed" \
-  && ../src/stripbin \ 
+  && scanelf --recursive --nobanner --osabi --etype "ET_DYN,ET_EXEC" . \
+    | while read type osabi filename ; do \
+      [ "$osabi" != "STANDALONE" ] || continue ; \
+      strip "${filename}" ; \
+    done \
   && make install \
   && cd .. \
   && apk del asterisk-build-deps \
