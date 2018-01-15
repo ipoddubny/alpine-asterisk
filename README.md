@@ -13,8 +13,6 @@
 
 ## Limitations
  - No support for databases except for sqlite, no odbc modules
- - Asterisk uses openssl while the rest of the system uses libressl,
-   because pjproject 2.7 fails to compile with libressl
  - Some rarely used channel drivers and other features are not built:
    - channel drivers: MGCP, Skinny, Unistim
    - DUNDi

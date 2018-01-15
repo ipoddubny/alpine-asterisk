@@ -7,9 +7,9 @@ COPY src ./src
 ENV ASTERISK_VERSION 13.19.0
 
 RUN apk update \
-  && apk add libtool libuuid jansson libxml2 sqlite-libs readline libcurl openssl zlib libsrtp lua5.1-libs spandsp \
+  && apk add libtool libuuid jansson libxml2 sqlite-libs readline libcurl libressl zlib libsrtp lua5.1-libs spandsp \
   && apk add --virtual .build-deps gnupg build-base patch bsd-compat-headers util-linux-dev ncurses-dev libresample \
-        jansson-dev libxml2-dev sqlite-dev readline-dev curl-dev openssl-dev \
+        jansson-dev libxml2-dev sqlite-dev readline-dev curl-dev libressl-dev \
         zlib-dev libsrtp-dev lua-dev spandsp-dev \
   && export GNUPGHOME="$(mktemp -d)" \
   && for key in \
@@ -33,6 +33,7 @@ RUN apk update \
   && sed -i -e 's/ASTSSL_LIBS:=$(OPENSSL_LIB)/ASTSSL_LIBS:=-Wl,--no-as-needed $(OPENSSL_LIB) -Wl,--as-needed/g' main/Makefile \
   && patch -p1 < ../src/musl-mutex-init.patch \
   && patch -p1 < ../src/musl-glob-compat.patch \
+  && cp ../src/9000-libressl.patch third-party/pjproject/patches/ \
   && ./configure --with-pjproject-bundled \
   && make menuselect.makeopts \
   && ./menuselect/menuselect \
