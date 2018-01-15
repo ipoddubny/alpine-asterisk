@@ -27,7 +27,7 @@ RUN apk update \
   && wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-${ASTERISK_VERSION}.tar.gz \
   && wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-${ASTERISK_VERSION}.tar.gz.asc \
   && gpg --batch --verify asterisk-${ASTERISK_VERSION}.tar.gz.asc asterisk-${ASTERISK_VERSION}.tar.gz \
-  && rm -r "$GNUPGHOME" asterisk-${ASTERISK_VERSION}.tar.gz.asc \
+  && rm -rf "$GNUPGHOME" asterisk-${ASTERISK_VERSION}.tar.gz.asc \
   && tar xzf asterisk-${ASTERISK_VERSION}.tar.gz \
   && cd asterisk-${ASTERISK_VERSION} \
   && sed -i -e 's/ASTSSL_LIBS:=$(OPENSSL_LIB)/ASTSSL_LIBS:=-Wl,--no-as-needed $(OPENSSL_LIB) -Wl,--as-needed/g' main/Makefile \
