@@ -24,8 +24,8 @@ RUN apk update \
     gpg --keyserver keyserver.pgp.com --recv-keys "$key" || \
     gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" ; \
   done \
-  && wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-${ASTERISK_VERSION}.tar.gz \
-  && wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-${ASTERISK_VERSION}.tar.gz.asc \
+  && wget http://downloads.asterisk.org/pub/telephony/asterisk/releases/asterisk-${ASTERISK_VERSION}.tar.gz \
+  && wget http://downloads.asterisk.org/pub/telephony/asterisk/releases/asterisk-${ASTERISK_VERSION}.tar.gz.asc \
   && gpg --batch --verify asterisk-${ASTERISK_VERSION}.tar.gz.asc asterisk-${ASTERISK_VERSION}.tar.gz \
   && rm -rf "$GNUPGHOME" asterisk-${ASTERISK_VERSION}.tar.gz.asc \
   && tar xzf asterisk-${ASTERISK_VERSION}.tar.gz \
