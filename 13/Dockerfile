@@ -4,7 +4,7 @@ WORKDIR /root/
 
 COPY src ./src
 
-ENV ASTERISK_VERSION 13.19.2
+ENV ASTERISK_VERSION 13.20.0
 
 RUN apk update \
   && apk add libtool libuuid jansson libxml2 sqlite-libs readline libcurl libressl zlib libsrtp lua5.1-libs spandsp \
