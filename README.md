@@ -1,5 +1,8 @@
 # Small Docker image for Asterisk on Alpine Linux
 
+| **WARNING**. New versions of Asterisk redefine memory management functions (malloc, free), which is incompatible with MUSL libc used by Alpine. |
+| -------- |
+
 ## Goals
  - Create a minimal Docker image for Asterisk
  - Build it from source to make it easy to build any versions, including rcs, betas or git master
